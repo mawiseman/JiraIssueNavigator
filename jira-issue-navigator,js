@@ -14,6 +14,12 @@
 	HideText: '< Hide',
 	ShowText: 'Show >',
 	
+	/**
+ 	* Store Project Visibility in localStorage
+ 	*
+ 	* @param {String} the project code
+	* @param {bool} the new visibile status
+ 	*/
 	SetProjectVisibility : function (projectCode, isVisible)
 	{
 		if( typeof(Storage) !== "undefined" )
@@ -48,7 +54,13 @@
 		}
 	},
 
-	GetSetProjectVisibility : function (projectCode)
+	/**
+ 	* Get the Project Visibility from localStorage
+ 	*
+ 	* @param {String} the project code
+	* @return {bool} visibility status
+ 	*/
+	GetProjectVisibility : function (projectCode)
 	{
 		if(typeof(Storage)!=="undefined")
 		{
@@ -67,11 +79,17 @@
 						return allJsonProjectVisibility[i].isVisible;
 					}
 				}
-			}
-			return false;
+			}			
 		}
+		
+		return false;
 	},
 
+	/**
+ 	* Set weather Grouping is turned on or off
+ 	*
+ 	* @param {bool} grouping status
+ 	*/
 	SetIsGrouped : function (isGrouped)
 	{
 		jiraIssueNavigator.IsGrouped = isGrouped;
@@ -82,6 +100,11 @@
 		}
 	},
 
+	/**
+ 	* Find out if Grouping is turned on or off
+ 	*
+ 	* @return {bool} grouping status
+ 	*/
 	GetIsGrouped : function ()
 	{
 		if( typeof(Storage) !== "undefined" )
@@ -93,6 +116,10 @@
 		return jiraIssueNavigator.IsGrouped;
 	},
 
+	/**
+ 	* Group all issues on the screen
+ 	* If Grouping is already enabled, clear it and re-group
+ 	*/
 	GroupIssues : function ()
 	{
 		if(jiraIssueNavigator.GetIsGrouped())
@@ -147,7 +174,7 @@
 			
 			//Show or hide this group
 			
-			var isVisible = jiraIssueNavigator.GetSetProjectVisibility($(this).attr('projectCode'));
+			var isVisible = jiraIssueNavigator.GetProjectVisibility($(this).attr('projectCode'));
 			
 			if(isVisible == false)
 			{
@@ -175,6 +202,9 @@
 		});
 	},
 
+	/**
+ 	* Remove all Grouping rows
+ 	*/
 	UnGroupIssues : function ()
 	{
 		$("tr.my_groups").remove();
@@ -183,15 +213,24 @@
 		jiraIssueNavigator.SetIsGrouped(false)
 	},
 
+	/**
+ 	* Remove / Reset all settings from localStorage
+ 	*/
 	ResetSettings : function ()
 	{
 		if( typeof(Storage) !== "undefined" )
 		{
 			var allJsonProjectVisibility = new Array();
-			window.localStorage.setItem('ProjectVisibility', allJsonProjectVisibility);
+			window.localStorage.setItem('ProjectVisibility', allJsonProjectVisibility);			
+			window.localStorage.setItem('IsGrouped', false);
 		}
 	},
 
+	/**
+ 	* Show or Hide a groups child rows
+ 	*
+ 	* @param {element} the a element clicked
+ 	*/
 	ShowHideGroup : function (link)
 	{
 		var isVisible = false;
