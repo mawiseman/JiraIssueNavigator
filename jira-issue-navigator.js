@@ -8,12 +8,12 @@
  */
  
  var jiraIssueNavigator = {
-
-  IsGrouped: false,
+	
+	IsGrouped: false,
 
 	HideText: '< Hide',
 	ShowText: 'Show >',
-
+	
 	/**
  	* Store Project Visibility in localStorage
  	*
@@ -25,12 +25,12 @@
 		if( typeof(Storage) !== "undefined" )
 		{
 			var allJsonProjectVisibility = new Array();
-
+			
 			if(window.localStorage.getItem('ProjectVisibility') != null && window.localStorage.getItem('ProjectVisibility') != "")
 				allJsonProjectVisibility = JSON.parse(window.localStorage.getItem('ProjectVisibility'));
-
+			
 			var isNew = true;
-
+			
 			for(var i = 0; i < allJsonProjectVisibility.length; i++)
 			{
 				if(allJsonProjectVisibility[i].projectCode == projectCode)
@@ -39,17 +39,17 @@
 					isNew = false;
 				}
 			}
-
+			
 			if(isNew)
 			{
 				var jsonProjectVisibility = { 
 					projectCode : projectCode, 
 					isVisible : isVisible 
 				};
-
+				
 				allJsonProjectVisibility.push(jsonProjectVisibility);
 			}
-
+			
 			window.localStorage.setItem('ProjectVisibility', JSON.stringify(allJsonProjectVisibility));
 		}
 	},
@@ -65,13 +65,13 @@
 		if(typeof(Storage)!=="undefined")
 		{
 			var allJsonProjectVisibility = new Array();
-
+			
 			if(window.localStorage.getItem('ProjectVisibility') != null && window.localStorage.getItem('ProjectVisibility') != "")
 				allJsonProjectVisibility = JSON.parse(window.localStorage.getItem('ProjectVisibility'));
-
+			
 			if(allJsonProjectVisibility != "")
 			{
-
+			
 				for(var i = 0; i < allJsonProjectVisibility.length; i++)
 				{
 					if(allJsonProjectVisibility[i].projectCode == projectCode)
@@ -81,7 +81,7 @@
 				}
 			}			
 		}
-
+		
 		return false;
 	},
 
@@ -93,7 +93,7 @@
 	SetIsGrouped : function (isGrouped)
 	{
 		jiraIssueNavigator.IsGrouped = isGrouped;
-
+		
 		if( typeof(Storage) !== "undefined" )
 		{
 			window.localStorage.setItem('IsGrouped', isGrouped);
@@ -112,7 +112,7 @@
 			if(window.localStorage.getItem('IsGrouped') != null)
 				jiraIssueNavigator.IsGrouped = window.localStorage.getItem('IsGrouped');
 		}
-
+		
 		return jiraIssueNavigator.IsGrouped;
 	},
 
@@ -124,23 +124,23 @@
 	{
 		if(jiraIssueNavigator.GetIsGrouped())
 			jiraIssueNavigator.UnGroupIssues();
-
+			
 		jiraIssueNavigator.SetIsGrouped(true);
-
+		
 		var lastProject = '';
 		var columns = $("#issuetable tr:first td").length;
 
 		$(".issuetable-wrap tr td.issuekey a").each(function()
 		{
 			var currentProject = $(this).text().substring(0, $(this).text().indexOf('-'));
-
+			
 			if(currentProject != lastProject)
 			{
 				var headerRow = "<tr class='my_groups' projectCode='" + currentProject + "'>";
 				headerRow += "<td colspan='" + (columns - 1) + "'><h3>" + currentProject + "</h3><h4></h4></td>";		
 				headerRow += "<td align='right'><a class='smallgrey showhide' href=''>" + jiraIssueNavigator.HideText + "</a></td>";		
 				headerRow += "</tr>";
-
+				
 				$(this).parents('tr:first').before(headerRow);
 				lastProject = currentProject;
 			}
@@ -149,19 +149,19 @@
 		$("tr.my_groups").each(function(){
 			var issues = 0;
 			var isGroup = false;
-
+			
 			var tr = $(this);
 
 			//Update the Group Titles with Totals
-
+			
 			while(!isGroup)
 			{
 				var tr = tr.next();
-
+				
 				if(tr.length == 0){
 					isGroup = true; //there are no more issues
 				}
-
+				
 				if(tr.hasClass('my_groups')) {
 					isGroup = true;
 				}
@@ -169,13 +169,13 @@
 					issues += 1;
 				}
 			}
-
+			
 			$(this).find('h4').append(issues);
-
+			
 			//Show or hide this group
-
+			
 			var isVisible = jiraIssueNavigator.GetProjectVisibility($(this).attr('projectCode'));
-
+			
 			if(isVisible == false)
 			{
 				$(this).find("a.showhide").click();
@@ -189,14 +189,14 @@
 		$("tr.my_groups h4")
 			.width(20)
 			.css({ float: "left", "text-align": "right" });
-
+		
 		$("tr a.showhide")
 			.css({ "white-space": "nowrap" });
-
+			
 		$("tr.my_groups").mouseenter(function(){
 			$(this).css({ "background-color": "#C0C0C0" });
 		});
-
+		
 		$("tr.my_groups").mouseleave(function(){
 			$(this).css({ "background-color": "#D2D2D2" });
 		});
@@ -209,7 +209,7 @@
 	{
 		$("tr.my_groups").remove();
 		$("tr").show();
-
+		
 		jiraIssueNavigator.SetIsGrouped(false)
 	},
 
@@ -238,47 +238,71 @@
 		$(link).closest("tr").nextAll().each(function() {
 			if ($(this).hasClass('my_groups')) 
 				return false;
-
+			
 			$(this).toggle();
-
+			
 			isVisible = $(this).is(":visible");
 		});
-
+		
 		var projectCode = $(link).parents('tr:first').attr('projectCode');
-
+		
 		jiraIssueNavigator.SetProjectVisibility(projectCode, isVisible);
-
+		
 		if($(link).text() == jiraIssueNavigator.ShowText)
 			$(link).text(jiraIssueNavigator.HideText);
 		else
 			$(link).text(jiraIssueNavigator.ShowText);
 	},
+	
+	CreateMenu : function ()
+	{
+		
+		var menuHtml = ''
+			+ '<li class="aui-dd-parent">'
+			+ '	<a class="lnk aui-dd-link standard icon-tools" id="viewJinGroupItems" href="#"><span>Grouping</span></a>'
+			+ '	<div class="aui-dropdown standard hidden" id="viewJinGroupItems-dropdown">'
+			+ '		<ul id="viewJinGroupItems-dropdown" class="last">'
+			+ '			<li class="dropdown-item"><a id="jinGroupItems" rel="nofollow" href="#">Group Issues</a></li>'
+			+ '			<li class="dropdown-item"><a id="jinUnGroupItems" rel="nofollow" href="#">Ungroup Issues</a></li>'
+			+ '			<li class="dropdown-item"><a id="jinResetGroup" rel="nofollow" href="#">Reset</a></li>'
+			+ '		</ul>'
+			+ '	</div>'
+			+ '</li>';
+		
+		$("#navigator-options ul:first").append(menuHtml);
+		
+		AJS.$("#navigator-options .aui-dd-parent").dropDown("Standard", {
+			trigger: ".aui-dd-link"
+		});
+		
+		$("#jinGroupItems").click(function()
+		{
+			jiraIssueNavigator.GroupIssues();
+			return false;
+		});
+		
+		$("#jinUnGroupItems").click(function()
+		{
+			jiraIssueNavigator.UnGroupIssues();
+			return false;
+		});
+		
+		$("#jinResetGroup").click(function()
+		{
+			jiraIssueNavigator.ResetSettings();
+			jiraIssueNavigator.UnGroupIssues();
+			return false;
+		});
+	}
  };
  
 
 $(document).ready(function() {
-
+	
+	jiraIssueNavigator.CreateMenu();
+	
 	if(jiraIssueNavigator.GetIsGrouped() == "true")
 		jiraIssueNavigator.GroupIssues();
-
-	$("#jinGroupItems").click(function()
-	{
-		jiraIssueNavigator.GroupIssues();
-		return false;
-	});
-
-	$("#jinUnGroupItems").click(function()
-	{
-		jiraIssueNavigator.UnGroupIssues();
-		return false;
-	});
-
-	$("#jinResetGroup").click(function()
-	{
-		jiraIssueNavigator.ResetSettings();
-		jiraIssueNavigator.UnGroupIssues();
-		return false;
-	});
 });
 
 
