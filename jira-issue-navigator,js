@@ -26,7 +26,7 @@
 		{
 			var allJsonProjectVisibility = new Array();
 			
-			if(window.localStorage.getItem('ProjectVisibility') != null)
+			if(window.localStorage.getItem('ProjectVisibility') != null && window.localStorage.getItem('ProjectVisibility') != "")
 				allJsonProjectVisibility = JSON.parse(window.localStorage.getItem('ProjectVisibility'));
 			
 			var isNew = true;
@@ -66,7 +66,7 @@
 		{
 			var allJsonProjectVisibility = new Array();
 			
-			if(window.localStorage.getItem('ProjectVisibility') != null)
+			if(window.localStorage.getItem('ProjectVisibility') != null && window.localStorage.getItem('ProjectVisibility') != "")
 				allJsonProjectVisibility = JSON.parse(window.localStorage.getItem('ProjectVisibility'));
 			
 			if(allJsonProjectVisibility != "")
@@ -241,7 +241,7 @@
 			
 			$(this).toggle();
 			
-			isVisible = $(link).is(":visible");
+			isVisible = $(this).is(":visible");
 		});
 		
 		var projectCode = $(link).parents('tr:first').attr('projectCode');
