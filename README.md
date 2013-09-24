@@ -3,7 +3,7 @@ Jira Issue Navigator
 
 This is a script to make JIRA's Issue Navigator more useable by grouping issues by Project Key and saving your view settings in localStorage so next time you view the IssueNavigator your last view is saved.
 
-![Jira Issue Navigator](https://github.com/mawiseman/JiraIssueNavigator/docs/JiraIssueNavigator.png)
+![Jira Issue Navigator](https://github.com/mawiseman/JiraIssueNavigator/blob/master/docs/JiraIssueNavigator.png?raw=true)
 
 Installation
 ------------
