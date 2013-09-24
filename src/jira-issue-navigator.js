@@ -71,7 +71,6 @@
 			
 			if(allJsonProjectVisibility != "")
 			{
-			
 				for(var i = 0; i < allJsonProjectVisibility.length; i++)
 				{
 					if(allJsonProjectVisibility[i].projectCode == projectCode)
@@ -259,14 +258,14 @@
 		
 		var menuHtml = ''
 			+ '<li class="aui-dd-parent">'
-			+ '	<a class="lnk aui-dd-link standard icon-tools" id="viewJinGroupItems" href="#"><span>Grouping</span></a>'
-			+ '	<div class="aui-dropdown standard hidden" id="viewJinGroupItems-dropdown">'
-			+ '		<ul id="viewJinGroupItems-dropdown" class="last">'
-			+ '			<li class="dropdown-item"><a id="jinGroupItems" rel="nofollow" href="#">Group Issues</a></li>'
-			+ '			<li class="dropdown-item"><a id="jinUnGroupItems" rel="nofollow" href="#">Ungroup Issues</a></li>'
-			+ '			<li class="dropdown-item"><a id="jinResetGroup" rel="nofollow" href="#">Reset</a></li>'
-			+ '		</ul>'
-			+ '	</div>'
+			+ 	'<a class="lnk aui-dd-link standard icon-tools" id="viewJinGroupItems" href="#"><span>Grouping</span></a>'
+			+ 	'<div class="aui-dropdown standard hidden" id="viewJinGroupItems-dropdown">'
+			+ 		'<ul id="viewJinGroupItems-dropdown" class="last">'
+			+ 			'<li class="dropdown-item"><a id="jinGroupItems" rel="nofollow" href="#">Group Issues</a></li>'
+			+ 			'<li class="dropdown-item"><a id="jinUnGroupItems" rel="nofollow" href="#">Ungroup Issues</a></li>'
+			+ 			'<li class="dropdown-item"><a id="jinResetGroup" rel="nofollow" href="#">Reset</a></li>'
+			+ 		'</ul>'
+			+ 	'</div>'
 			+ '</li>';
 		
 		$("#navigator-options ul:first").append(menuHtml);
